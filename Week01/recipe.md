@@ -1,6 +1,5 @@
 # Cinnamon Churros
-![Cinnamon Churros](file:///Users/chloeyoung/Desktop/churro.jpg)
-    width="300px"/>
+![Cinnamon Churros](file:///Users/chloeyoung/Desktop/churro.jpg)>
 ## Cinnamon churros are a crispy, fried pastry from Spain, made with simple dough and a star-shaped nozzle for their ridged look. Rolled in sugar and cinnamon, they're often served with chocolate or caramel, making them a popular sweet treat worldwide.
 
 Ingredients
