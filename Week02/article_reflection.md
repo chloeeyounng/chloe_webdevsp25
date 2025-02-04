@@ -1,0 +1,3 @@
+# Article Reflection
+
+At first, wireframing seemed extremely complicated. However, I learned that they are supposed to be low-resolution during the first round, so the team can get an idea of how the user is supposed to navigate through the website. Initially, I thought it would be best to jump straight into the computer and skip the sketching phase. After reading more, I realized the importance of sketching, as it helps make the overall process much smoother. 
