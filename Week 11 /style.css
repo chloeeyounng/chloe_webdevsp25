@@ -1,34 +1,54 @@
 body {
   font-family: "EB Garamond", serif;
-  background: url(./background2.jpg);
+  background: linear-gradient(to bottom right, #fff5f5, #f7d4d4);
   text-align: center;
   padding: 40px;
-  color: #8b0000;
+  color: #8b1e3f;
+  background-attachment: fixed;
 }
 
 #wheel-container {
-  margin: 20px auto;
-  width: 300px;
-  height: 50px;
+  margin: 30px auto;
+  width: 320px;
+  height: 60px;
   overflow: hidden;
-  border: 2px solid #aaa;
-  border-radius: 10px;
+  border: 2px solid #f2b6b6;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 15px rgba(139, 30, 63, 0.2);
 }
 
 #wheel {
-  font-size: 30px;
+  font-size: 32px;
   white-space: nowrap;
-  transition: transform 2s ease-out;
+  color: #b03060;
 }
 
 input {
-  padding: 5px;
+  padding: 10px;
   font-size: 16px;
+  border: 1px solid #f4cccc;
+  border-radius: 10px;
+  background-color: #fff0f0;
+  color: #8b1e3f;
+  outline: none;
+  transition: box-shadow 0.3s ease;
 }
 
 button {
-  padding: 6px 12px;
+  padding: 10px 16px;
   font-size: 16px;
   margin-left: 10px;
   cursor: pointer;
+  background-color: #e88b8b;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(232, 139, 139, 0.4);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #d76a6a;
+  transform: scale(1.05);
 }
