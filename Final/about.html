@@ -1,0 +1,329 @@
+<style>
+  body {
+    width: 1500px;
+    background: url(glitter_sky.gif);
+  }
+</style>
+<head>
+  <script type="text/javascript">
+    var colour = "random"; // Sparkle color; can be "random" or a fixed color
+    var sparkles = 100; // Number of sparkles on screen
+    var x = (ox = 400); // Mouse X position, original X
+    var y = (oy = 300); // Mouse Y position, original Y
+    var swide = 800; //  Width of the screen
+    var shigh = 600; // Height of the screen
+    var sleft = (sdown = 0); // Scroll offsets
+    var tiny = new Array(); // Small fading sparkles
+    var star = new Array(); // Bright stars
+    var starv = new Array(); // Visibility timer for stars
+    var starx = new Array(); // X position of stars
+    var stary = new Array(); // Y position of stars
+    var tinyx = new Array(); // X position of small sparkles
+    var tinyy = new Array(); // Y position of small sparkles
+    var tinyv = new Array(); // Visibility timer for small sparkles
+
+    window.onload = function () {
+      // Sets up function once page content loads
+      if (document.getElementById) {
+        var i, rats, rlef, rdow;
+        for (var i = 0; i < sparkles; i++) {
+          // Loops to create 100 sparkles.
+          var rats = createDiv(3, 3); // Create 3x3 pixel div
+          rats.style.visibility = "hidden"; // Hidden by default and layered on top
+          rats.style.zIndex = "999";
+          document.body.appendChild((tiny[i] = rats)); // Added to page and stored in array for later
+          starv[i] = 0; // Timers (inactive)
+          tinyv[i] = 0;
+          var rats = createDiv(5, 5); // Main sparkle counter
+          rats.style.backgroundColor = "transparent";
+          rats.style.visibility = "hidden";
+          rats.style.zIndex = "999";
+          var rlef = createDiv(1, 5); // Elements are shaped like sparkles
+          var rdow = createDiv(5, 1);
+          rats.appendChild(rlef); // Sparkle shape is made by adding both lines to a container
+          rats.appendChild(rdow);
+          rlef.style.top = "2px"; // Centers the sparkle
+          rlef.style.left = "0px";
+          rdow.style.top = "0px";
+          rdow.style.left = "2px";
+          document.body.appendChild((star[i] = rats)); // Entire sparkle is added to the page and saved in star array
+        }
+        set_width(); // Measures screen size
+        sparkle(); // Starts the sparkle animation
+      }
+    };
+
+    function sparkle() {
+      // Animate the sparkles
+      var c;
+      if (Math.abs(x - ox) > 1 || Math.abs(y - oy) > 1) {
+        // Compares current and old mouse position
+        ox = x;
+        oy = y;
+        for (
+          c = 0;
+          c < sparkles;
+          c++ // Loops through the sparkle pool
+        )
+          if (!starv[c]) {
+            // If mouse moved, create a new sparkle at that position.
+            star[c].style.left = (starx[c] = x) + "px";
+            star[c].style.top = (stary[c] = y + 1) + "px";
+            star[c].style.clip = "rect(0px, 5px, 5px, 0px)";
+            star[c].childNodes[0].style.backgroundColor = star[
+              c
+            ].childNodes[1].style.backgroundColor =
+              colour == "random" ? newColour() : colour; // Random color
+            star[c].style.visibility = "visible";
+            starv[c] = 50; // sets timer so the sparkle will fade
+            break;
+          }
+      }
+      for (c = 0; c < sparkles; c++) {
+        // Updates all sparkles
+        if (starv[c]) update_star(c);
+        if (tinyv[c]) update_tiny(c);
+      }
+      setTimeout("sparkle()", 40);
+    }
+
+    function update_star(i) {
+      // Update movement of sparkle
+      if (--starv[i] == 25) star[i].style.clip = "rect(1px, 4px, 4px, 1px)"; // Making sparkle smaller
+      if (starv[i]) {
+        stary[i] += 1 + Math.random() * 3; // Move sparkle down by 1-4 pixels
+        starx[i] += ((i % 5) - 2) / 5; // Add motion
+        if (stary[i] < shigh + sdown) {
+          // If sparkle is still on screen
+          star[i].style.top = stary[i] + "px"; // Update the position
+          star[i].style.left = starx[i] + "px";
+        } else {
+          // If moved off screen
+          star[i].style.visibility = "hidden"; // Hide the sparkle
+          starv[i] = 0;
+          return;
+        }
+      } else {
+        tinyv[i] = 50;
+        tiny[i].style.top = (tinyy[i] = stary[i]) + "px";
+        tiny[i].style.left = (tinyx[i] = starx[i]) + "px";
+        tiny[i].style.width = "2px";
+        tiny[i].style.height = "2px";
+        tiny[i].style.backgroundColor =
+          star[i].childNodes[0].style.backgroundColor;
+        star[i].style.visibility = "hidden";
+        tiny[i].style.visibility = "visible";
+      }
+    }
+
+    function update_tiny(i) {
+      if (--tinyv[i] == 25) {
+        tiny[i].style.width = "1px";
+        tiny[i].style.height = "1px";
+      }
+      if (tinyv[i]) {
+        tinyy[i] += 1 + Math.random() * 3;
+        tinyx[i] += ((i % 5) - 2) / 5;
+        if (tinyy[i] < shigh + sdown) {
+          tiny[i].style.top = tinyy[i] + "px";
+          tiny[i].style.left = tinyx[i] + "px";
+        } else {
+          tiny[i].style.visibility = "hidden";
+          tinyv[i] = 0;
+          return;
+        }
+      } else tiny[i].style.visibility = "hidden";
+    }
+
+    document.onmousemove = mouse;
+    function mouse(e) {
+      if (e) {
+        y = e.pageY;
+        x = e.pageX;
+      } else {
+        set_scroll();
+        y = event.y + sdown;
+        x = event.x + sleft;
+      }
+    }
+
+    window.onscroll = set_scroll;
+    function set_scroll() {
+      if (typeof self.pageYOffset == "number") {
+        sdown = self.pageYOffset;
+        sleft = self.pageXOffset;
+      } else if (
+        document.body &&
+        (document.body.scrollTop || document.body.scrollLeft)
+      ) {
+        sdown = document.body.scrollTop;
+        sleft = document.body.scrollLeft;
+      } else if (
+        document.documentElement &&
+        (document.documentElement.scrollTop ||
+          document.documentElement.scrollLeft)
+      ) {
+        sleft = document.documentElement.scrollLeft;
+        sdown = document.documentElement.scrollTop;
+      } else {
+        sdown = 0;
+        sleft = 0;
+      }
+    }
+
+    window.onresize = set_width;
+    function set_width() {
+      var sw_min = 999999;
+      var sh_min = 999999;
+      if (document.documentElement && document.documentElement.clientWidth) {
+        if (document.documentElement.clientWidth > 0)
+          sw_min = document.documentElement.clientWidth;
+        if (document.documentElement.clientHeight > 0)
+          sh_min = document.documentElement.clientHeight;
+      }
+      if (typeof self.innerWidth == "number" && self.innerWidth) {
+        if (self.innerWidth > 0 && self.innerWidth < sw_min)
+          sw_min = self.innerWidth;
+        if (self.innerHeight > 0 && self.innerHeight < sh_min)
+          sh_min = self.innerHeight;
+      }
+      if (document.body.clientWidth) {
+        if (document.body.clientWidth > 0 && document.body.clientWidth < sw_min)
+          sw_min = document.body.clientWidth;
+        if (
+          document.body.clientHeight > 0 &&
+          document.body.clientHeight < sh_min
+        )
+          sh_min = document.body.clientHeight;
+      }
+      if (sw_min == 999999 || sh_min == 999999) {
+        sw_min = 800;
+        sh_min = 600;
+      }
+      swide = sw_min;
+      shigh = sh_min;
+    }
+
+    function createDiv(height, width) {
+      var div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.height = height + "px";
+      div.style.width = width + "px";
+      div.style.overflow = "hidden";
+      return div;
+    }
+
+    function newColour() {
+      var c = new Array();
+      c[0] = 255;
+      c[1] = Math.floor(Math.random() * 256);
+      c[2] = Math.floor(Math.random() * (256 - c[1] / 2));
+      c.sort(function () {
+        return 0.5 - Math.random();
+      });
+      return "rgb(" + c[0] + ", " + c[1] + ", " + c[2] + ")";
+    }
+  </script>
+</head>
+
+<a href="https://en.wikipedia.org/wiki/Maneki-neko" target="_blank">
+  <img
+    style="
+      position: fixed;
+      width: 250px;
+      bottom: 300px;
+      left: 350px;
+      z-index: 1000;
+    "
+    src="Untitled design.png"
+/></a>
+<a href="grandmashouse.html">
+  <img
+    style="position: fixed; width: 230px; bottom: 150px; left: 80px"
+    src="75191938614__2BD82CA1-BA64-4B03-A956-57960555EA56.jpeg"
+  />
+</a>
+<img
+  style="position: fixed; width: 80px; top: 120px; left: 100px; z-index: 1000"
+  src="eyeball.gif"
+/>
+<a href="https://youtu.be/JCo5w6qukJY?si=wyZV6ECwNVqDbHXq" target="_blank">
+  <img style="position: fixed; width: 150px; left: -10px" src="IMG_1551.jpeg" />
+</a>
+
+<a href="https://www.youtube.com/watch?v=P-Go_Jv3cZU" target="_blank">
+  <img
+    style="position: fixed; width: 400px; bottom: 40px; right: 250px"
+    src="clownfish.gif"
+  />
+</a>
+
+<h1
+  style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    color: yellow;
+    font-family: Lucida control, monospace;
+    margin: 0;
+    z-index: 1000;
+  "
+>
+  HI, I'M CHLOE!
+</h1>
+
+<h2
+  style="
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    color: yellow;
+    font-family: Lucida control, monospace;
+    margin: 0;
+    z-index: 1000;
+  "
+>
+  I am an Integrated Design and Media student based in New York City.
+</h2>
+
+<marquee>
+  <a href="https://en.wikipedia.org/wiki/Kaiping" target="_blank">
+    <img style="width: 300px" src="home.jpg" /></a
+></marquee>
+
+<div
+  style="
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  "
+>
+  <img src="orange.gif" style="height: 80px" />
+  <img src="world.gif" style="height: 80px" />
+  <img src="orange.gif" style="height: 80px" />
+  <img src="world.gif" style="height: 80px" />
+  <img src="orange.gif" style="height: 80px" />
+  <img src="world.gif" style="height: 80px" />
+  <img src="orange.gif" style="height: 80px" />
+  <img src="world.gif" style="height: 80px" />
+  <img src="orange.gif" style="height: 80px" />
+  <img src="world.gif" style="height: 80px" />
+  <img src="orange.gif" style="height: 80px" />
+  <img src="world.gif" style="height: 80px" />
+  <img src="orange.gif" style="height: 80px" />
+  <img src="world.gif" style="height: 80px" />
+  <img src="orange.gif" style="height: 80px" />
+  <img src="world.gif" style="height: 80px" />
+  <img src="orange.gif" style="height: 80px" />
+</div>
+
+<a href="index.html">
+  <img
+    style="position: fixed; width: 150px; bottom: 100px; right: 15px"
+    src="go_back.png"
+  />
+</a>

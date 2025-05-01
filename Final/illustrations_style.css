@@ -1,0 +1,249 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Lacquer", sans-serif;
+  background-color: black;
+}
+
+.sidenav {
+  height: 100vh;
+  width: 20vw;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: black;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: url("pointer_finger_cursor.png") 20 20, auto;
+}
+
+.sidenav-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  cursor: url("pointer_finger_cursor.png") 20 20, auto;
+}
+
+.sidenav a,
+.dropdown-btn {
+  padding: 12px 12px 12px 40px;
+  font-family: "Lacquer", sans-serif;
+  text-decoration: none;
+  font-size: 16px;
+  color: white;
+  border: none;
+  background: none;
+  outline: none;
+  width: 100%;
+  text-align: left;
+  cursor: url("pointer_finger_cursor.png") 20 20, auto;
+}
+
+.sidenav a:hover,
+.dropdown-btn:hover {
+  text-decoration: underline;
+  cursor: url("thumbtack_cursor.png") 20 20, auto;
+}
+
+.dropdown-container {
+  display: none;
+  background-color: black;
+  padding-left: 8px;
+  cursor: url("thumbtack_cursor.png") 20 20, auto;
+}
+
+.dropdown-container a {
+  color: #ff10f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: url("thumbtack_cursor.png") 20 20, auto;
+}
+
+.logo {
+  width: 100%;
+  margin-left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: url("thumbtack_cursor.png") 20 20, auto;
+}
+
+.logo img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+  cursor: url("thumbtack_cursor.png") 20 20, auto;
+}
+
+.keep-in-touch {
+  width: 100%;
+  padding: 15px 15px;
+  display: flex;
+  align-items: left;
+  flex-direction: column;
+  cursor: url("pointer_finger_cursor.png") 20 20, auto;
+}
+
+.keep-in-touch p {
+  color: yellow;
+  font-size: 16px;
+  align-items: left;
+  cursor: url("pointer_finger_cursor.png") 20 20, auto;
+}
+
+.keep-in-touch a {
+  color: #ff10f0;
+  font-size: 14px;
+  display: block;
+  text-decoration: none;
+  align-items: left;
+  padding-left: 0;
+  margin-left: 0;
+  cursor: url("thumbtack_cursor.png") 20 20, auto;
+}
+
+.keep-in-touch a:hover {
+  text-decoration: underline;
+  cursor: url("thumbtack_cursor.png") 20 20, auto;
+}
+
+.content {
+  height: 100vh;
+  width: 80vw;
+  margin-left: 20vw;
+  cursor: url("pointer_finger_cursor.png") 20 20, auto;
+  display: flex;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* Create two equal columns */
+.column {
+  flex: 50%;
+  max-width: 50%;
+  padding: 0 4px;
+  position: relative;
+}
+
+/* Ensure images keep their original size */
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+/* Overlay container */
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+/* The overlay */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Show overlay on hover */
+.container:hover .overlay {
+  opacity: 1;
+}
+
+/* Overlay text */
+.text {
+  color: white;
+  font-size: 22px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 25px;
+  left: 25px;
+  background: none;
+  border: none;
+  padding: 0;
+  z-index: 1001;
+  cursor: url(thumbtack_cursor.png);
+}
+
+.menu-toggle img {
+  width: 55px;
+  height: auto;
+  cursor: url(thumbtack_cursor.png);
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  div.content {
+    margin-left: 0;
+    width: 100vw;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .sidenav {
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+    width: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1000;
+  }
+
+  .sidenav.active {
+    transform: translateX(0);
+  }
+
+  .marquee-section {
+    top: auto;
+    bottom: 0;
+  }
+
+  .logo img {
+    display: none;
+  }
+}
